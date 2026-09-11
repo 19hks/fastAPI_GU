@@ -51,34 +51,56 @@ def get_product(productid:int, response:Response):
         response.status_code = 500
         return {"message":"Error fetching products","isSuccess":False}
 
-#update
-@app.put("/products/{productid}")
-def update_product(productid:int, product:Product, response:Response):
+
+# update
+@app.put("/product/{productid}")
+def updateProduct(productid: int, product: Product, response: Response):
     try:
         for index in range(len(products)):
             if products[index].id == productid:
                 products[index] = product
                 response.status_code = 200
-                return {"message": "Product updated successfully", "isSuccess": True}
+                return {
+                    "message": "Product updated successfully",
+                    "isSuccess": True
+                }
+
         response.status_code = 404
-        return {"message": "Product not found", "isSuccess": False}
+        return {
+            "message": "Product not found",
+            "isSuccess": False
+        }
+
     except Exception as e:
         response.status_code = 500
-        return {"message":"Error updating product","isSuccess":False}
-    
+        return {
+            "message": "Error updating product",
+            "isSuccess": False
+        }
+        
+#delete
+@app.delete("/product/{productid}")
+def deleteProduct(productid: int, response: Response):
+    try:
+        for index in range(len(products)):
+            if products[index].id == productid:
+                del products[index]
+                response.status_code = 200
+                return {
+                    "message": "Product deleted successfully",
+                    "isSuccess": True
+                }
 
-# @app.put("/product/{productid}")
-# def updateProduct(productid: int, product: Product, response: Response):
-#     try:
-#         idx = 0
-#         for index in range(0,len(products), 1):
-#             if products[index] == productid:
-#                 idx = index
-                
-#         product[idx] = product
-#         response.status_code = 200
-#         return {"message": "Product updated successfully", "isSuccess": True}
-#     except Exception as e:
-#             response.status_code = 500
-#             return {"message":"Error fetching products","isSuccess":False}
+        response.status_code = 404
+        return {
+            "message": "Product not found",
+            "isSuccess": False
+        }
+
+    except Exception as e:
+        response.status_code = 500
+        return {
+            "message": "Error deleting product",
+            "isSuccess": False
+        }
             
